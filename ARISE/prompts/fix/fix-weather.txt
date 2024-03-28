@@ -1,0 +1,11 @@
+Please correct the weather description in the following Scenic 3.0 code, using the provided examples and adhering to their syntax.  Make sure not to remove the commets that are identifying the code parts, e.g. #START BEHAVIOR, #END BEHAVIOR
+
+Current description: {current_description}
+
+Snippet examples: {content}
+
+Make use of the examples and adhere to the syntax used in them. The code fails to compile with the following error message: {error_message}. Please return the full code with the fix applied, without any additional information. You may leave the comments in the code.
+
+Code:
+
+{code}

@@ -1,0 +1,6 @@
+Now, your task is to help write part of the Scenic code for defining the weather given the corresponding description. Here are some related description-snippet pairs:
+{content}
+Now, provide the snippet for the following description. Choose the snippet that fits the descripting the best and return it without doing any changes to it.
+Return nothing if None is specified.
+
+Description: {current_description}

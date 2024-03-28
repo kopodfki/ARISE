@@ -1,0 +1,108 @@
+Decompose a complete description of a safety-critical scenario into detailed sub-descriptions for each of these distinct aspects:
+
+Object Type: Clearly state whether the adversarial agent is a Car, Pedestrian, Bicycle, Truck or Motorcycle.
+Behavior: Provide a concise description of what the adversarial agent is doing.
+Geometry: Describe the road layout, ego's spawn point and any relevant traffic control devices (e.g., ego is driving on a straight road, ego is driving straight through a four-way intersection with a red light).
+Spawn Position: Specify where the adversarial agent starts relative to the ego vehicle. Ensure this does not include agents described in 'Miscellaneous'.
+Miscellaneous: Describe any other vehicles or pedestrians present in the scene that are not the main adversarial agent or the ego (e.g., background car traffic, pedestrians on a sidewalk).
+Weather: Describe the atmospheric conditions of the scenario (e.g., rainy night, clear sunset, foggy evening).
+Requirements: Describe the requirements of the scenario, i.e. if one agent should initially see other one, or the distance from agent to intersection, other agent, etc. Split the requirements with semicolon ";".
+
+The goal is to take a full scenario description and extract the key information for each of these six categories.
+
+Here are some examples:
+Scenario: The ego vehicle is driving on a straight road, with limited visibility, and the car in front brakes suddenly as the ego approaches. 
+Object Type: Car
+Behavior: The adversarial car suddenly brakes as the ego approaches.
+Geometry: Ego is driving on a straight road.
+Spawn Position: The adversarial agent is directly in front of the ego vehicle on the same straight road, heading in the same direction.
+Miscellaneous: None
+Weather: Poor visibility
+Requirements: ego can see adversarial vehicle; initial heading of an adversarial vehicle is the same as ego's;
+
+Scenario: The Ego vehicle is driving on a highway, and an adversarial vehicle is driving in front of ego. Adversarial vehicle is forced to perform an emergency stop because of debris on the road.
+Object Type: Car
+Behavior: The adversarial car drives and then performs an emergency stop.
+Geometry: The ego vehicle is driving on a highway.
+Spawn Position: The adversarial car is driving on the same road in front of the ego vehicle.
+Miscellaneous: Debris on the road in front of an adversarial vehicle.
+Weather: Any
+Requirements: ego can see adversarial vehicle; adversarial vehicle can see debris; ego is driving on same road as adversarial vehicle; initial heading of an adversarial vehicle is the same as ego's;
+
+Scenario: The ego vehicle attempts a right turn at a four-way intersection, and an adversarial pedestrian crosses the road and suddenly stops.
+Object Type: Pedestrian
+Behavior: The adversarial pedestrian deliberately steps onto the road in front of the ego vehicle.
+Geometry: The ego vehicle drives across a four-way intersection.
+Spawn Position: The adversarial agent is on the right front of the ego vehicle at the end of the ego's initial lane for crossing.
+Miscellaneous: None
+Weather: Any
+Requirements: initially distance from ego to intersection is less than 10 meters; eventually ego can see the pedestrian; eventually pedestrian should be in driving region; 
+
+Scenario: The ego vehicle navigates around a parked car, and an oncoming car suddenly turns into its path.
+Object Type: Car
+Behavior: The adversarial car suddenly turns into the ego's path.
+Geometry: The ego vehicle is positioned on a two-lane road with traffic flowing in opposite directions.
+Spawn Position: The adversarial agent comes from the near opposite oncoming lane, with a parked car blocking the ego vehicle's lane.
+Miscellaneous: None
+Weather: Any
+Requirements: eventually ego lane should be equal to adversarial agent's lane;
+
+Scenario: The ego vehicle is traveling along a straight road, with a moderate visibility, when a pedestrian, initially hidden behind a bus stop on the sidewalk to the right, unexpectedly dashes onto the road directly in front of the ego vehicle and comes to an abrupt stop.
+Object Type: Pedestrian
+Behavior: The adversarial pedestrian suddenly sprints from the right, stopping abruptly in front of the ego vehicle.
+Geometry: A straight road.
+Spawn Position: The adversarial agent spawns from behind a bus stop on the right front of the ego vehicle on the same straight road for crossing.
+Miscellaneous: None
+Weather: Daylight with light rain, overcast, wet surfaces.
+Requirements: initially ego should not see the pedestrian; eventually pedestrian should be in the driving region; initially pedestrian should be in the walkable region; initial heading of an adversarial vehicle is rightrelative to ego;
+
+Scenario: The ego vehicle is changing to the right lane in foggy night conditions when an adversarial vehicle approaches rapidly from the right lane.
+Object Type: Car
+Behavior: The adversarial car approaches rapidly.
+Geometry: The ego vehicle is placed in a straight lane that includes a right lane.
+Spawn Position: The adversarial car drives straight from the rear right of the ego.
+Miscellaneous: None
+Weather: Night with Light Ground Fog
+Requirements: initially ego road should be the same as adversarial vehicle's road; intial heading of an adversarial vehicle should be the same as ego's;
+
+Scenario: The ego vehicle is turning right at an intersection, and a crossing car from the left violates the red light and suddenly brakes. A pedestrian is walking on the sidewalks of an intersection.
+Object Type: Car
+Behavior: The adversarial car suddenly brakes near the ego vehicle.
+Geometry: The ego vehicle drives straight across a four-way signalized intersection; the light is red for the adversarial agent.
+Spawn Position: The adversarial car is crossing the intersection from the left.
+Miscellaneous: Pedestrian walking on the sidewalks of the intersection.
+Weather: Any
+Requirements: eventually ego and adversarial car should be in the intersection; initially distance between ego and intersection is less than 15 meters; initial heading of an adversarial vehicle is left relative to ego;
+
+Scenario: The ego vehicle is driving on a wet highway when suddenly an adversarial vehicle in front performs an emergency stop.
+Object Type: Car
+Behavior: The adversarial car drives and then suddenly brakes.
+Geometry: The ego is driving on a highway.
+Spawn Position: The adversarial car is driving on the same road in front of ego. 
+Miscellaneous: None
+Weather: Daylight with moderate rain, reduced visibility, wet.
+Requirements: ego should see the adversarial vehicle;
+
+Scenario: The ego vehicle is parked on the side of the road. Adversary vehicle changes to the left lane and passes by the ego vehicle coming from behind. 
+Object Type: Car
+Behavior: The adversarial car approaches ego vehicle and changes the lane to pass by the ego.
+Geometry:The ego is parked on a side of a two-lane road.
+Spawn Position: The adversarial car is driving in same lane from behind of ego.
+Miscellaneous: None
+Weather: Any
+Requirements: ego road should be the same as adversarial vehicle road; eventually, distance between ego and adversarial vehicle should be less than 5 meters; intial heading of an adversarial vehicle should be the same as ego's;
+
+Do not apply any text styles, just write plain text. Leave only the relevant for the scenario information, while reamoving everything that is not supported by CARLA or Scenic. 
+Reason about the information missing in the scenario, such that the position of the active and inactive actors and their actions match the description. If the obstacle/object is already described in Spawn Position, do not include it into Miscellaneous.
+Generate requirements strictly adhering to these rules:
+1.Types: Only initial or eventually.
+2.Allowed Requirements (Use only these):
+Visibility: agent can see other agent, agent cannot see other agent, agent's view of another agent obstructed by third agent. Only use if the agent's visibility is completely blocked by an obstacle (e.g. a car), and not partially (e.g. by a bench).
+Distance: distance between agents (default to greater than if not specified otherwise, and express the distance in meters), distance from agent to intersection.
+Location: agent in drivable region (roads), agent in walkable region (sidewalk, crossings). No other regions.
+Relative Heading (Intersections Only): heading relative to other agent: right (approaching from right), heading relative to other agent: left (approaching from left). No other heading uses.
+3.Mandatory: At least one distance requirement (from 2) for each agent (including misc. agents).
+4.Forbidden: NO speed requirements. NO requirements other than those explicitly listed in item 2.
+List each requirement with its type (initial/eventually).
+Now, please extract the adversarial behavior, geometry, spawn position, Miscellaneous, weather and requirements in the same format from the following scenario:
+Scenario: {scenario}

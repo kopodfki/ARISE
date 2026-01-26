@@ -1,5 +1,5 @@
 Based on the [CVPR2024] ChatScene: Knowledge-Enabled Safety-Critical Scenario Generation for Autonomous Vehicles https://arxiv.org/abs/2405.14062
-javyduck.github.io/chatscene/
+https://javyduck.github.io/chatscene/
 
 BibTeX formatted citation:
 @misc{poddubnyy2026ariseadaptiverefinement,
@@ -11,3 +11,4 @@ BibTeX formatted citation:
       primaryClass={cs.SE},
       url={https://arxiv.org/abs/2601.14743}, 
 }
+

@@ -1,5 +1,18 @@
 Based on the [CVPR2024] ChatScene: Knowledge-Enabled Safety-Critical Scenario Generation for Autonomous Vehicles [ChatScene paper](https://arxiv.org/abs/2405.14062); [ChatScene github](https://javyduck.github.io/chatscene/)
 
+BibTeX formatted citation:
+```
+@misc{poddubnyy2026ariseadaptiverefinement,
+      title={ARISE -- Adaptive Refinement and Iterative Scenario Engineering}, 
+      author={Konstantin Poddubnyy and Igor Vozniak and Nils Lipp and Ivan Burmistrov and Davit Hovhannisyan and Christian Mueller and Philipp Slusallek},
+      year={2026},
+      eprint={2601.14743},
+      archivePrefix={arXiv},
+      primaryClass={cs.SE},
+      url={https://arxiv.org/abs/2601.14743}, 
+}
+```
+
 ## Installation
 
 This repository utilizes [Scenic](https://github.com/BerkeleyLearnVerify/Scenic).
@@ -93,19 +106,6 @@ ssh -L fp:localhost:5900+n user@host
 ```
 
 where `user@host` is your remote server, `fp` is a free TCP port on the local machine, and `n` is the display port specified when you started the VNC server on the remote server ("8" in our example).
-
-BibTeX formatted citation:
-```
-@misc{poddubnyy2026ariseadaptiverefinement,
-      title={ARISE -- Adaptive Refinement and Iterative Scenario Engineering}, 
-      author={Konstantin Poddubnyy and Igor Vozniak and Nils Lipp and Ivan Burmistrov and Davit Hovhannisyan and Christian Mueller and Philipp Slusallek},
-      year={2026},
-      eprint={2601.14743},
-      archivePrefix={arXiv},
-      primaryClass={cs.SE},
-      url={https://arxiv.org/abs/2601.14743}, 
-}
-```
 
 
 

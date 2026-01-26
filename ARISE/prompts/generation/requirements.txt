@@ -1,0 +1,21 @@
+Now, your task is to help write part of the Scenic code for defining the requirements given the corresponding description.
+Here is the scenario description: {current_description}
+Here is the code snippet which defines the objects in the scene: {scenic_code}
+Here are some exmaples of the requirements:
+1. initially ego should not see the pedestrian: ```scenic\n require not ego.canSee(pedestrian, occludingObjects=tuple([])) # Make sure to replace the empty list with a list of all other simulation agents```
+2. intially ego should see the adversarial vehicle: ```scenic\n require ego.canSee(AdvAgent, occludingObjects=tuple([])) # Make sure to replace the empty list with a list of all other simulation agents```
+3. eventually ego and adversarial vehicle should be in the intersection ```scenic\n require eventually ego in intersection implies AdvAgent in intersection```
+4. eventually ego should see the adversarial vehicle: ```scenic\n require eventually ego.canSee(AdvAgent, occludingObjects=tuple([])) # Make sure to replace the empty list with a list of all other simulation agents``` 
+5. eventually distance between ego and adversarial vehicle should be less than 10: ```scenic\n require eventually distance from ego to AdvAgent < 10```
+6. eventually pedestrian should be in the drivable region: ```scenic\n require eventually pedestrian in network.drivableRegion```
+7. intially pedestrian should be in the walkable region: ```scenic\n require pedestrian in network.walkableRegion```
+8. ego is at / near the intersection: ```scenic\n require distance from ego to intersection < 10```
+9. initial heading of an adversarial vehicle is right relative to ego; ```scenic\n require 70 deg <= RelativeHeading(AdvAgent, ego) <= 110 deg```
+10. initial heading of an adversarial vehicle is left relative to ego; ```scenic\n require -110 deg <= RelativeHeading(AdvAgent, ego) <= -70 deg```
+11. initial heading of an adversarial vehicle is the same as ego; ```scenic\n require -10 deg <= RelativeHeading(AdvAgent, ego) <= 10 deg```
+12. initial ego's view of adversarial agent is obstructed by miscellaneous agent; ```scenic\n require ego.canSee(AdvAgent) and not ego.canSee(AdvAgent, occludingObjects=tuple([MiscAgent])) # checks if ego can not see AdvAgent and can see AdvAgent with occludingObjects as MiscAgent```
+
+Your task is to write the requirements based on the above examples and the scenario description. Requirements should not contain word initially or initial.
+Here are the requirements: {requirements}
+
+Make sure to return the scenic code only, without any additional text or explanation. Wrap the code in a code block.

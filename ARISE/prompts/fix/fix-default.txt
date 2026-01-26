@@ -1,0 +1,21 @@
+Please correct the following Scenic 3.0 code, given the source and the error message below. Return only the complete, fixed Scenic 3.0 code, without any extra commentary. Remember that Scenic parameters are declared with 'param' and accessed via 'globalParameters'. Do not attempt to import any network files, as they are already included in the provided code. Avoid using 'new' within behaviors, even if the error log suggests it, as this indicates a known issue with position specifiers in Scenic.  Make sure not to remove the commets that are identifying the code parts, e.g. #START BEHAVIOR, #END BEHAVIOR
+Utilize only the specified position specifiers (and no combinations thereof):
+
+  - `at (OrientedPoint, Object)`; Example: `pedestrian = new Pedestrian at pedestrianSpawnPoint`
+  - `in (region)`, e.g., `network.drivableRegion`, `network.walkableRegion`, `network.crossingRegion`; Example: `pedestrian = new Pedestrian in network.walkableRegion`
+  - `on (region, Object, vector)`; Example: `AdvAgent = new Car on road`
+  - `at (OrientedPoint, Object) offset by (vector)`; Example: `pedestrian = new Pedestrian at pedestrianSpawnPoint offset by Vector(2, 2)`
+  - `at (OrientedPoint, Object) offset along (direction) by (vector)`; Example: `pedestrian = new Pedestrian at AdvAgent offset along (AdvAgent.heading) by Vector(2, 2)`
+  - `(left or right) of (vector or OrientedPoint or Object) [by scalar]`; Example: `pedestrian = new Pedestrian left of AdvAgent by 5`
+  - `(ahead of or behind) (vector or OrientedPoint or Object) [by scalar]`; Example: `pedestrian = new Pedestrian ahead of AdvAgent by 5`
+  - `following (vectorField) [from (vector, Object, OrientedPoint)] for scalar`; Example: `AdvAgent = new Car following roadDirection from ego for 5`
+  - to retrieve the adjacent left / right lane of another Agent, use following: `AdvAgent = new Car on ego.laneSection.(laneToLeft or laneToRight)`
+Optional arguments are enclosed in square brackets, and choices are indicated by curly braces. Ensure the corrected code is valid Scenic 3.0 code and compiles without errors.
+
+RejectionException means that scenario cant be generated on hand the agent positionining and requirements. You may change the distances, change the town (i.e. Town05 to Town03, Town04, Town01 etc) or remove some requirements that may have caused the problem.
+
+Error log:
+{error_message}
+
+Code:
+{scenic_code}

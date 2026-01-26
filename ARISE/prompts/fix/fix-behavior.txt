@@ -1,0 +1,11 @@
+Please correct the behavior description in the following Scenic 3.0 code, using the provided examples and adhering to their syntax. Do not invent new behaviors; only use the examples provided. Make sure not to remove the commets that are identifying the code parts, e.g. #START BEHAVIOR, #END BEHAVIOR
+
+Current description: {current_description}
+
+Snippet examples: {content}
+
+Make use of the example behaviors. Do not make up new behaviors and adhere to the syntax used in examples. The code fails to compile with the following error message: {error_message}. Do not use or insert the keyword 'new' in the behaviors, even if the error message suggests it. This is a known Scenic bug related to position specifiers in agent definitions, so please check those first. Incorrect examples to avoid are: offset left, offset forward, offset right, near, or any incorrect composition of position specifiers. Do not redefine CrossingBehavior or any behaviors mentioned in the examples. Please return the full code with the fix applied, without any additional information.
+
+Code:
+
+{code}

@@ -1,0 +1,17 @@
+Now, your task is to help write part of the Scenic code for defining the geometry for the ego agent given the corresponding description. Here are some related description-snippet pairs:
+{content}
+Now, provide the snippet for the following description. Note that if there is already one in the example that matches the description, directly return snippet. Otherwise, please construct the snippet following the same format as above. Please do not use the syntax outside of those used in the examples.
+You must use only the following position specifiers and none other, do not combine the specifiers:
+
+  - `at (OrientedPoint, Object)`; Example: `pedestrian = new Pedestrian at pedestrianSpawnPoint`
+  - `in (region)`, e.g., `network.drivableRegion`, `network.walkableRegion`, `network.crossingRegion`; Example: `pedestrian = new Pedestrian in network.walkableRegion`
+  - `on (region, Object, vector)`; Example: `AdvAgent = new Car on road`
+  - `at (OrientedPoint, Object) offset by (vector)`; Example: `pedestrian = new Pedestrian at pedestrianSpawnPoint offset by Vector(2, 2)`
+  - `at (OrientedPoint, Object) offset along (direction) by (vector)`; Example: `pedestrian = new Pedestrian at AdvAgent offset along (AdvAgent.heading) by Vector(2, 2)`
+  - `(left or right) of (vector or OrientedPoint or Object) [by scalar]`; Example: `pedestrian = new Pedestrian left of AdvAgent by 5`
+  - `(ahead of or behind) (vector or OrientedPoint or Object) [by scalar]`; Example: `pedestrian = new Pedestrian ahead of AdvAgent by 5`
+  - `following (vectorField) [from (vector, Object, OrientedPoint)] for scalar`; Example: `AdvAgent = new Car following roadDirection from ego for 5`
+  - to retrieve the adjacent left / right lane of another Agent, use following: `AdvAgent = new Car on ego.laneSection.(laneToLeft or laneToRight)`
+Square brackets denote the optional arguments, and the curly braces denote the choice from the options.
+
+Description: {current_description}

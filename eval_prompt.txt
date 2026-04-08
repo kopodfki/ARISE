@@ -1,0 +1,90 @@
+Your task is to strictly evaluate semantical conformity between the traffic scenario description and the Scenic 3.0 script. 
+The scenario description is specified after the "Scenario description:" text. 
+The Scenic 3.0 script is specified after the "Script:" text.
+Initialize total_score as 0 for now.
+Initialize max_possible_score as 0 for now.
+Please assess the semantical conformity between the scenario description and the Scenic 3.0 script across the following 7 categories:
+    1. Adversarial type: evaluate that the adversarial type (car / cyclist / pedestrian) is specified in the script exactly like in scenario description.
+        Increment max_possible_score by 10.
+        Increment total_score by 10 rating if adversarial type matches scenario description.
+        Example:
+            - Scenario specifies: "The ego starts an unprotected left turn at intersection while oncoming car accelerates crossing the intersection from the right side..."
+            - Script must specify adversary type as "new Car" as in scenario description.
+    2. Behaviors: evaluate that behaviors of the ego vehicle, adversarial vehicle are specified in the script like in scenario description and is specified like in the example.
+        Increment max_possible_score by 10.
+        Rate and increment total_score on a scale from 0 to 5 rating if ego vehicle trajectory or maneuver matches scenario description (if not specified by scenario description, set total_score to 5).
+        Rate and increment total_score on a scale from 0 to 5 rating if adversarial vehicle behavior matches scenario description and is specified like in the example.
+        Example:
+            - Scenario specifies: "The ego starts an unprotected left turn at intersection while oncoming car accelerates crossing the intersection from the right side..."
+            - Script must specify ego trajectory (i.e. LEFT_TURN) as well as adversarial actor's behavior accordingly.
+    3. Geometry: evaluate that road geometry is specified in the script like in scenario description and is specified like in the example.
+        Increment max_possible_score by 10.
+        Rate and increment total_score on a scale from 0 to 10 rating if road geometry in Scenic 3.0 script matches road geometry in the scenario description and is specified like in the example.
+        Example:
+            - Scenario specifies: "The ego starts an unprotected left turn at intersection while oncoming car accelerates crossing the intersection from the right side..."
+            - Script must specify an intersection and the maneuver (LEFT_TURN in this case) matching the description and is specified like in the example.
+    4. Weather: evaluate that weather is specified in the script exactly like in scenario description (if applicable, some scenarios dont specify the weather).
+        Increment max_possible_score by 10.
+        Increment total_score on a scale from 0 to 10 rating if weather in Scenic 3.0 script matches weather in the scenario description and is specified like in the example.
+        Example 1:
+            - Scenario specifies: "at night"
+            - Script must specify something that looks as follows: param weather = dict(cloudiness=0.0, precipitation=0, precipitation_deposits=0.0, wind_intensity=5.0, sun_azimuth_angle=180.0, sun_altitude_angle=-45.0, fog_density=0.0, fog_distance=200.0, fog_falloff=0.0, wetness=0.0, scattering_intensity=0.0, mie_scattering_scale=0.0, rayleigh_scattering_scale=0.01, dust_storm=0.0)
+        Example 2:
+            - Scenario specifies: "at foggy night"
+            - Script must specify something that looks as follows: param weather = dict(cloudiness=30.0, precipitation=0, precipitation_deposits=0.0, wind_intensity=2.0, sun_azimuth_angle=180.0, sun_altitude_angle=-40.0, fog_density=25.0, fog_distance=25.0, fog_falloff=0.3, wetness=5.0, scattering_intensity=0.1, mie_scattering_scale=0.05, rayleigh_scattering_scale=0.01, dust_storm=0.0)
+    5. Miscellaneous: evaluate that other objects and traffic participants other than ego and adversarial vehicle are specified in the script exactly like in scenario description (if applicable, because some scenarios do not include any miscellaneous objects / participants).
+        Increment max_possible_score by 10.
+        Increment total_score on a scale from 0 to 10 rating if objects and each traffic participants other than ego and adversarial vehicles, are matching scenario description.
+        Example 1:
+            - Scenario specifies: "... car in from suddenly breaks before debris on road"
+            - Script must spawn debris there.
+        Example 2:
+            - Scenario specifies: "Ego is turning left at intersection waiting for pedestrian to cross, while oncoming car accelerates crossing the intersection..."
+            - Script must spawn oncoming car as a miscellaneous agent.
+    6. Detailed requirements: evaluate that the fine details like headings, directions, speeds are matching scenario description.
+        Increment max_possible_score by 10.
+        Increment total_score by rating how good the requirements fit the scenario on a scale from 0 to 10. You may use the exaple scenario as a reference, though the requirements may vary and should match the scenario. 
+        There cannot be missing requirements, just the ones that are not matching the scenario definition.
+        Example:
+            - Scenario specifies: "oncoming car coming from the right"
+            - Script must specify  corresponding heading relative to ego (i.e. require -110 deg <= RelativeHeading(AdvAgent, ego) <= -70 deg).
+        Here is the reference for the possible requirements and there are no other possbile requirements:
+        1. initially ego should not see the pedestrian: ```scenic\n require not ego.canSee(pedestrian, occludingObjects=tuple([]))```
+        2. intially ego should see the adversarial vehicle: ```scenic\n require ego.canSee(AdvAgent, occludingObjects=tuple([]))```
+        3. eventually ego and adversarial vehicle should be in the intersection ```scenic\n require eventually ego in intersection implies AdvAgent in intersection```
+        4. eventually ego should see the adversarial vehicle: ```scenic\n require eventually ego.canSee(AdvAgent, occludingObjects=tuple([]))``` 
+        5. eventually distance between ego and adversarial vehicle should be less than 10: ```scenic\n require eventually distance from ego to AdvAgent < 10```
+        6. eventually pedestrian should be in the drivable region: ```scenic\n require eventually pedestrian in network.drivableRegion```
+        7. intially pedestrian should be in the walkable region: ```scenic\n require pedestrian in network.walkableRegion```
+        8. ego is at / near the intersection: ```scenic\n require distance from ego to intersection < 10```
+        9. initial heading of an adversarial vehicle is right relative to ego; ```scenic\n require 70 deg <= RelativeHeading(AdvAgent, ego) <= 110 deg```
+        10. initial heading of an adversarial vehicle is left relative to ego; ```scenic\n require -110 deg <= RelativeHeading(AdvAgent, ego) <= -70 deg```
+        11. initial heading of an adversarial vehicle is the same as ego; ```scenic\n require -10 deg <= RelativeHeading(AdvAgent, ego) <= 10 deg```
+        12. initial ego's view of adversarial agent is obstructed by miscellaneous agent; ```scenic\n require ego.canSee(AdvAgent) and not ego.canSee(AdvAgent, occludingObjects=tuple([MiscAgent])) # checks if ego can not see AdvAgent and can see AdvAgent with occludingObjects as MiscAgent```
+    7. Spawn locations: evaluate that adversarial vehicle is specified to spawn relative to ego vehicle exactly as specified by scenario description.
+        Increment max_possible_score by 10.
+        Increment total_score on a scale from 0 to 10 rating if adversarial vehicle is specified to spawn relative to ego vehicle in script exactly as specified by scenario description.
+        Example:
+            - Scenario specifies: "oncoming car coming from the right side"
+            - Script must spawn the adversarial actor to the right relative to ego.
+
+Now, once you're done with counting the scores, your task is to write report:
+- For each of the 7 aforementioned categories, provide the max_possible_score and the total_score, and list the matching and non-matching factors.
+- Be precise, direct and try to keep your report short.
+- No intro, no outro, no emoticons.
+- Be fair and unbiased, no need to please us, be strict in rating the scenarios.
+- Format the output in the form list:
+    Example:
+        Adversarial type: max_possible_score: 10; total_score: 10; matching: adversarial car; non-matching: none.
+        Behaviors: max_possible_score: 10; total_score: 5; matching: ego; non-matching: adversarial is bicycle while description specifies car.
+        Geometry: max_possible_score: 10; total_score: 10; matching: intersection; non-matching: none.
+        Weather: max_possible_score: 10; total_score: 5; matching: night; non-matching: no fog while description specifies foggy night.
+        Miscellaneous: max_possible_score: 10; total_score: 5; matching: debris; non-matching: no cyclist driving parallel while description specifies it.
+        Detailed requirements: max_possible_score: 10; total_score: 5; matching: adversary heading; non-matching: adversary speed (60 km/h instead of needed 80 km/h specified by description).
+        Spawn locations: max_possible_score: 10; total_score: 10; matching: ego should initially see the adversary; non-matching: none.
+        Overall maximum possible score: 70
+        Overall total score: 50
+
+Scenario description: {desc}
+
+Script: {curr_script}
